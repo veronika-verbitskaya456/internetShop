@@ -11,3 +11,14 @@ export type User = {
   role: UserRole;
   avatar: string;
 };
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type LoginResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+

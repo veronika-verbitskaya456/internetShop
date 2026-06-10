@@ -1,4 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useLoginMutation } from "../../services/authApi";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../store/slices/authSlice";
 
 interface SignInFormInput {
   email: string;
@@ -19,9 +22,17 @@ const SignInPage = () => {
     mode: "onBlur",
   });
 
-  const handleSubmit: SubmitHandler<SignInFormInput> = (formValues) => {
+  const [login] = useLoginMutation();
+  const dispatch = useDispatch();
+
+
+  const handleSubmit: SubmitHandler<SignInFormInput> = async (formValues) => {
     try {
-      //api request
+      const email = formValues.email;
+      const password = formValues.password;
+      const loginData = await login({email, password}).unwrap();
+      dispatch(setToken({accessToken: loginData.accessToken}));
+
     } catch (error) {
       setError("root.server", {
         type: "server",
