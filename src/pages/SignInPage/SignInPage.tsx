@@ -31,8 +31,8 @@ const SignInPage = () => {
       const email = formValues.email;
       const password = formValues.password;
       const loginData = await login({email, password}).unwrap();
-      dispatch(setToken({accessToken: loginData.accessToken}));
-
+      dispatch(setToken({accessToken: loginData.access_token}));
+      console.log(loginData.access_token);
     } catch (error) {
       setError("root.server", {
         type: "server",
@@ -63,7 +63,7 @@ const SignInPage = () => {
           type="password"
           id="password"
           {...register("password", {
-            required: "Enter product name",
+            required: "Введите пароль",
           })}
         />
         {errors.password && <p>{errors.password.message}</p>}

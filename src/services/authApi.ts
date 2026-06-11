@@ -9,7 +9,7 @@ import { logout, setToken } from "../store/slices/authSlice";
 import Cookies from "js-cookie";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://api.escuelajs.co/api/v1/",
+  baseUrl: "/api/v1/",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
@@ -72,14 +72,14 @@ export const authApi = createApi({
           refreshToken?: string;
         },
       ) => ({
-        accessToken: response.accessToken ?? "",
-        refreshToken: response.refreshToken ?? "",
+        access_token: response.access_token ?? "",
+        refresh_token: response.refresh_token ?? "",
       }),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setToken({ accessToken: data.accessToken }));
-          document.cookie = `refreshToken=${data.refreshToken}`;
+          dispatch(setToken({ accessToken: data.access_token }));
+          document.cookie = `refreshToken=${data.refresh_token}`;
         } catch (error) {
           console.warn(error);
         }
