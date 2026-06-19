@@ -22,3 +22,29 @@ export type LoginResponse = {
   refresh_token: string;
 };
 
+export type ProductCategory = {
+  id: number;
+  name: string;
+  image: string;
+  slug: string;
+};
+
+export type Product = {
+  id: number;
+  title: string;
+  slug: string;
+  price: number;
+  description: string;
+  category: ProductCategory;
+  images: Array<string>;
+};
+
+export type ProductResponse = {
+  id: number;
+  title: string | null;
+  slug: string | null;
+  price: number;
+  description: string | null;
+  category: ProductCategory;
+  images: Array<string> | null;
+};

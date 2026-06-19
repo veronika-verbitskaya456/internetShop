@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useLoginMutation } from "../../services/authApi";
+import { useGetUserProfileQuery, useLoginMutation } from "../../services/authApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/slices/authSlice";
 
@@ -33,6 +33,7 @@ const SignInPage = () => {
       const loginData = await login({email, password}).unwrap();
       dispatch(setToken({accessToken: loginData.access_token}));
       console.log(loginData.access_token);
+      
     } catch (error) {
       setError("root.server", {
         type: "server",
