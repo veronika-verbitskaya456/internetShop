@@ -5,12 +5,20 @@ import { logout, setToken } from "../store/slices/authSlice";
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: "/api/v1/",
-  prepareHeaders: (headers, { getState }) => {
+  prepareHeaders: (headers, { getState, endpoint }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
-    headers.set("Content-Type", "application/json");
+    if (endpoint === "uploadAvatarFile") {
+      headers.delete("Content-Type");
+    } else {
+      if (!headers.has("Content-Type")) {
+        headers.set("Content-Type", "application/json");
+      }
+    }
+    headers.set("X-Requested-With", "XMLHttpRequest");
+    headers.set("Accept", "application/json");
     return headers;
   },
 });
@@ -21,6 +29,7 @@ export const baseQueryWithReauth: BaseQueryFn = async (
   extraOptions,
 ) => {
   let result = await baseQuery(args, api, extraOptions);
+
   if (result.error?.status === 401) {
     const refreshToken = Cookies.get("refreshToken");
 
@@ -41,11 +50,11 @@ export const baseQueryWithReauth: BaseQueryFn = async (
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logout());
-        //navigation('/login')
+        // window.location.href = Routes.SIGN_IN;
       }
     } else {
       api.dispatch(logout());
-      //navigation('/login')
+      // window.location.href = Routes.SIGN_IN;
     }
   }
   return result;

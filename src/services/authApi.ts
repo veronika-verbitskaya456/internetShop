@@ -1,5 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { LoginRequest, LoginResponse } from "./types";
+import type {
+  LoginRequest,
+  LoginResponse,
+  NewUserRequest,
+  UploadAvatarFileResponse,
+  User,
+} from "./types";
 import { setToken } from "../store/slices/authSlice";
 import { baseQueryWithReauth } from "./baseQuery";
 
@@ -35,7 +41,35 @@ export const authApi = createApi({
     getUserProfile: builder.query({
       query: () => "auth/profile",
     }),
+    uploadAvatarFile: builder.mutation<UploadAvatarFileResponse, FormData>({
+      query: (formData) => ({
+        method: "POST",
+        url: "files/upload",
+        body: formData,
+      }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          // можно обновить профиль пользователя
+        } catch (error) {
+          console.warn(error);
+        }
+      },
+    }),
+    createNewUser: builder.mutation<User, NewUserRequest>({
+      query: (newUser) => ({
+        method: "POST",
+        url: "users/",
+        body: newUser,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useGetUserProfileQuery } = authApi;
+export const {
+  useLoginMutation,
+  useGetUserProfileQuery,
+  useUploadAvatarFileMutation,
+  useCreateNewUserMutation,
+} = authApi;

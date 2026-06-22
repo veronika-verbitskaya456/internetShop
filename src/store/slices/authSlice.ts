@@ -24,6 +24,7 @@ export const AuthSlice = createSlice({
     },
     setToken: (state, action: PayloadAction<{accessToken: string}>) => {
       state.accessToken = action.payload.accessToken;
+      state.isAuthenticated = true;
     },
     logout: (state) => {
       state.isAuthenticated = false;
