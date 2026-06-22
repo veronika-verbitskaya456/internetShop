@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { NewUserRequest } from "../../services/types";
 import { setToken } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 interface RegistrationFormInput {
   name: string;
@@ -50,13 +51,14 @@ const RegistrationPage = () => {
       }
 
       const registeredUser = await createNewUser(newUser).unwrap();
+      console.log(registeredUser.id);
       const loginData = await login({
         email: registeredUser.email,
         password: registeredUser.password
       }).unwrap();
 
       dispatch(setToken({ accessToken: loginData.access_token }));
-      document.cookie = `refreshToken=${loginData.refresh_token}`;
+      Cookies.set("refreshToken", loginData.refresh_token);
       navigate(Routes.MAIN);
 
     } catch (error) {

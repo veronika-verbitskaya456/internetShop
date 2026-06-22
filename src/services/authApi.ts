@@ -6,8 +6,9 @@ import type {
   UploadAvatarFileResponse,
   User,
 } from "./types";
-import { setToken } from "../store/slices/authSlice";
+import { logout, setToken, setUser } from "../store/slices/authSlice";
 import { baseQueryWithReauth } from "./baseQuery";
+import Cookies from "js-cookie";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -32,7 +33,7 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled;
           dispatch(setToken({ accessToken: data.access_token }));
-          document.cookie = `refreshToken=${data.refresh_token}`;
+          Cookies.set("refreshToken", data.refresh_token);
         } catch (error) {
           console.warn(error);
         }
@@ -40,6 +41,15 @@ export const authApi = createApi({
     }),
     getUserProfile: builder.query({
       query: () => "auth/profile",
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setUser({ user: data }));
+        } catch (error) {
+          console.warn("Пользователь не авторизован или сессия исткла", error);
+          dispatch(logout());
+        }
+      },
     }),
     uploadAvatarFile: builder.mutation<UploadAvatarFileResponse, FormData>({
       query: (formData) => ({

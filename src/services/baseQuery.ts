@@ -38,23 +38,22 @@ export const baseQueryWithReauth: BaseQueryFn = async (
         {
           url: "auth/refresh-token",
           method: "POST",
-          body: { refresh: refreshToken },
+          body: { refreshToken: refreshToken },
         },
         api,
         extraOptions,
       );
 
       if (refreshResult.data) {
-        const { accessToken } = refreshResult.data as { accessToken: string };
-        api.dispatch(setToken({ accessToken: accessToken }));
+        const data = refreshResult.data as { access_token: string; refresh_token: string };
+        api.dispatch(setToken({ accessToken: data.access_token }));
+        Cookies.set("refreshToken", data.refresh_token);
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logout());
-        // window.location.href = Routes.SIGN_IN;
       }
     } else {
       api.dispatch(logout());
-      // window.location.href = Routes.SIGN_IN;
     }
   }
   return result;
