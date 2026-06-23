@@ -58,7 +58,7 @@ const RegistrationPage = () => {
       }).unwrap();
 
       dispatch(setToken({ accessToken: loginData.access_token }));
-      Cookies.set("refreshToken", loginData.refresh_token);
+      Cookies.set("refreshToken", loginData.refresh_token, { path: "/", expires: 7 });
       navigate(Routes.MAIN);
 
     } catch (error) {

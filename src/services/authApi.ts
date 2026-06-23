@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQueryWithReauth,
+  tagTypes: ['User'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (user) => ({
@@ -33,7 +34,7 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled;
           dispatch(setToken({ accessToken: data.access_token }));
-          Cookies.set("refreshToken", data.refresh_token);
+          Cookies.set("refreshToken", data.refresh_token, { path: "/", expires: 7 });
         } catch (error) {
           console.warn(error);
         }
@@ -41,6 +42,7 @@ export const authApi = createApi({
     }),
     getUserProfile: builder.query({
       query: () => "auth/profile",
+      providesTags: ['User'],
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;

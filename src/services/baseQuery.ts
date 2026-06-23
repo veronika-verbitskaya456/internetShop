@@ -31,9 +31,14 @@ export const baseQueryWithReauth: BaseQueryFn = async (
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error?.status === 401) {
-    const refreshToken = Cookies.get("refreshToken");
+    const state = api.getState() as RootState;
+    const isAuth = state.auth.isAuthenticated;
+    if (!isAuth) {
+      return result;
+    }
 
-    if (refreshToken) {
+    const refreshToken = Cookies.get("refreshToken");
+    if (refreshToken && refreshToken.trim() !== "") {
       const refreshResult = await baseQuery(
         {
           url: "auth/refresh-token",
@@ -45,15 +50,29 @@ export const baseQueryWithReauth: BaseQueryFn = async (
       );
 
       if (refreshResult.data) {
-        const data = refreshResult.data as { access_token: string; refresh_token: string };
-        api.dispatch(setToken({ accessToken: data.access_token }));
-        Cookies.set("refreshToken", data.refresh_token);
-        result = await baseQuery(args, api, extraOptions);
+        const data = refreshResult.data as {
+          access_token: string;
+          refresh_token: string;
+        };
+
+        const currentState = api.getState() as RootState;
+        if (currentState.auth.isAuthenticated) {
+          api.dispatch(setToken({ accessToken: data.access_token }));
+          Cookies.set("refreshToken", data.refresh_token, {
+            path: "/",
+            expires: 7,
+          });
+          result = await baseQuery(args, api, extraOptions);
+        }
       } else {
         api.dispatch(logout());
+        Cookies.remove("refreshToken", { path: "/" });
+        return result;
       }
     } else {
       api.dispatch(logout());
+      Cookies.remove("refreshToken", { path: "/" });
+      return result;
     }
   }
   return result;
