@@ -1,7 +1,10 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useGetUserProfileQuery, useLoginMutation } from "../../services/authApi";
+import { useLoginMutation } from "../../services/authApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import styles from './SignInPage.module.css';
+import { Routes } from "../../routes";
 
 interface SignInFormInput {
   email: string;
@@ -24,16 +27,17 @@ const SignInPage = () => {
 
   const [login] = useLoginMutation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
   const handleSubmit: SubmitHandler<SignInFormInput> = async (formValues) => {
     try {
       const email = formValues.email;
       const password = formValues.password;
-      const loginData = await login({email, password}).unwrap();
-      dispatch(setToken({accessToken: loginData.access_token}));
-      console.log(loginData.access_token);
-      
+      const loginData = await login({ email, password }).unwrap();
+      dispatch(setToken({ accessToken: loginData.access_token }));
+      navigate('/');
+
     } catch (error) {
       setError("root.server", {
         type: "server",
@@ -43,37 +47,71 @@ const SignInPage = () => {
   };
 
   return (
-    <>
-      <form onSubmit={reactHookFormSubmit(handleSubmit)}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          {...register("email", {
-            required: true,
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: "Используйте следующий формат: email@example.com",
-            },
-          })}
-        />
-        {errors.email && <p>{errors.email.message}</p>}
+    <div className={styles.card}>
+      <h1 className={styles.title}>Вход в личный кабинет</h1>
+      <form onSubmit={reactHookFormSubmit(handleSubmit)} className={styles.form}>
+        <div className={styles.field}>
+          <div className={styles.labelWrapper}>
+            <label htmlFor="email">Email</label>
+          </div>
+          <input
+            type="text"
+            id="email"
+            placeholder="example@email.com"
+            className={`${styles.input} ${errors.email ? styles.error : ''}`}
+            {...register("email", {
+              required: "Введите email",
+              pattern: {
+                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                message: "Используйте формат: email@example.com",
+              },
+            })}
+            disabled={isSubmitting}
+          />
+          {errors.email && <p className={styles.errorMessage}>{errors.email.message}</p>}
+        </div>
 
-        <label htmlFor="password">Пароль</label>
-        <input
-          type="password"
-          id="password"
-          {...register("password", {
-            required: "Введите пароль",
-          })}
-        />
-        {errors.password && <p>{errors.password.message}</p>}
-        {errors?.root?.server && <>{errors.root?.server?.message}</>}
-        <button type="submit" disabled={!isValid || isSubmitting}>
+        <div className={styles.field}>
+          <div className={styles.labelWrapper}>
+            <label htmlFor="password">Пароль</label>
+          </div>
+          <input
+            type="password"
+            id="password"
+            placeholder="Введите пароль"
+            className={`${styles.input} ${errors.password ? styles.error : ''}`}
+            {...register("password", {
+              required: "Введите пароль",
+              minLength: {
+                value: 6,
+                message: "Пароль должен содержать минимум 6 символов",
+              },
+            })}
+            disabled={isSubmitting}
+          />
+          {errors.password && <p className={styles.errorMessage}>{errors.password.message}</p>}
+        </div>
+
+        {errors?.root?.server && (
+          <p className={styles.serverError}>{errors.root?.server?.message}</p>
+        )}
+
+        <button
+          type="submit"
+          disabled={!isValid || isSubmitting}
+          className={styles.button}
+        >
           {isSubmitting ? "ВХОД..." : "ВОЙТИ"}
         </button>
+
+        <div className={styles.footer}>
+          <p>
+            Нет аккаунта?{' '}
+            <a href={Routes.REGISTRATION} className={styles.signUpLink} >Зарегистрироваться</a>
+          </p>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 

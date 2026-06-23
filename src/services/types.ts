@@ -48,3 +48,16 @@ export type ProductResponse = {
   category: ProductCategory;
   images: Array<string> | null;
 };
+
+export type UploadAvatarFileResponse = {
+  originalname: string;
+  filename: string;
+  location: string;
+};
+
+export type NewUserRequest = {
+  name: string;
+  email: string;
+  password: string;
+  avatar: string;
+};

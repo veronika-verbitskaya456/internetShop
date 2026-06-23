@@ -1,18 +1,16 @@
+import { RouterProvider } from 'react-router-dom'
 import './App.css'
-import Header from './components/Header/Header'
-import MainPage from './pages/MainPage/MainPage'
-import SignInPage from './pages/SignInPage/SignInPage'
 import { store } from './store/store'
 import { Provider } from 'react-redux'
+import { router } from './routes'
+
 
 function App() {
 
   return (
     <Provider store={store}>
-      {/* <SignInPage /> */}
-      <MainPage/>
+      <RouterProvider router={router} />;
     </Provider>
-
   )
 }
 
