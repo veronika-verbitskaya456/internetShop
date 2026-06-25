@@ -2,12 +2,14 @@
   display: flex;
   width: 100%;
   max-width: 1700px;
+  justify-self: center;
   justify-content: space-between;
   align-items: center;
   padding: 1dvh;
   gap: 20px;
   border-radius: 10px;
   border: solid 2px #047a32;
+  margin-top: 10px;
   background-image: radial-gradient(
     circle 919px at 7.5% 51.7%,
     rgba(232, 240, 230, 1) 12.8%,

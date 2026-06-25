@@ -1,0 +1,32 @@
+.cardContainer {
+  max-width: 300px;
+  border: 2px solid #047a32;
+  color: #047a32;
+  font-size: 16px;
+  border-radius: 5%;
+}
+
+.imageContainer {
+  max-width: 300px;
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  max-width: 300px;
+  object-fit: contain;
+  border-radius: 5% 5% 0 0;
+}
+
+.infoProductContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 10px;
+}
+
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

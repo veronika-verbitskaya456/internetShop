@@ -23,7 +23,7 @@ const ProfileButtonIcon: React.FC<ProfileButtonIconProps> = ({ isOpened, onClick
       className={className}
     >
       <path
-        fill="rgb(255, 255, 255)"
+        fill="#fff"
         d={isOpened ? PATHS.opened : PATHS.closed}
       />
     </svg>

@@ -1,1 +1,22 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1700px;
+  padding-top: 20px;
+}
 
+.mainBannerContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1700px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.billboardImage {
+  max-width: 300px;
+  max-height: 300px;
+  align-self: center;
+}
