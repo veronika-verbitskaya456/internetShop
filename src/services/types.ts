@@ -61,3 +61,10 @@ export type NewUserRequest = {
   password: string;
   avatar: string;
 };
+
+export type Categories = {
+  id: number;
+  name: string;
+  slug: string;
+  image: string;
+};

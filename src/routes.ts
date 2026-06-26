@@ -1,22 +1,21 @@
-// routes.tsx
 import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout";
-// import ProfilePage from './pages/ProfilePage/ProfilePage';
-
 import { lazy } from "react";
-import PrivateRoute from "./components/Routes/PrivateRoute";
-import PublicRoute from "./components/Routes/PublicRoute";
 
 const MainPage = lazy(() => import("./pages/MainPage/MainPage"));
 const SignInPage = lazy(() => import("./pages/SignInPage/SignInPage"));
 const Page404 = lazy(() => import("./pages/404Page/Page404"));
 const RegistrationPage = lazy(() => import("./pages/RegistrationPage/RegistrationPage"));
+const PrivateRoute = lazy(() => import("./components/Routes/PrivateRoute"));
+const PublicRoute = lazy(() => import("./components/Routes/PublicRoute"));
+const FavoriteProductsPage = lazy(() => import("./pages/FavoriteProductsPage/FavoriteProductsPage"));
+const MainLayout = lazy(() => import("./layouts/MainLayout"));
 
 export enum Routes {
   MAIN = "/",
   SIGN_IN = "/signin",
   SIGN_UP = "/signup",
   PROFILE = "/profile",
+  FAVORITES = "/favorites",
   NOT_FOUND = "*",
   REGISTRATION = "/registration",
 }
@@ -32,12 +31,12 @@ export const router = createBrowserRouter([
       },
       {
         Component: PrivateRoute,
-        // children: [
-        //   {
-        //     path: Routes.PROFILE,
-        //     Component: ProfilePage,
-        //   },
-        // ],
+        children: [
+          {
+            path: Routes.FAVORITES,
+            Component: FavoriteProductsPage,
+          },
+        ],
       },
       {
         Component: PublicRoute,

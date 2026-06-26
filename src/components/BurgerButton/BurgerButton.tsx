@@ -1,13 +1,15 @@
-import { useState } from 'react';
 import BurgerButtonIcon from '../../assets/icons/BurgerButtonIcon';
 import styles from './BurgerButton.module.css'
 
-const BurgerButton = () => {
-  const [isOpened, setIsOpened] = useState(false);
+interface BurgerButtonProps {
+  isOpen?: boolean;
+  onClick?: () => void;
+}
 
+const BurgerButton = ({ isOpen = false, onClick }: BurgerButtonProps) => {
   return (
-    <button className={styles.burgerButton} onClick={() => setIsOpened(!isOpened)}>
-      <BurgerButtonIcon isOpened={isOpened}/>
+    <button className={styles.burgerButton} onClick={onClick}>
+      <BurgerButtonIcon isOpened={isOpen} />
     </button>
   )
 };

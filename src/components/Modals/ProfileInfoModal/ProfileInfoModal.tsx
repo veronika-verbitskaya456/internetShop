@@ -41,12 +41,18 @@ const ProfileInfoModal = ({ isOpen, onToggle }: ProfileInfoModalProps) => {
     onToggle();
   };
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onToggle();
+    }
+  };
+
   const handleRefetchProfile = () => {
     refetch();
   }
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} onClick={handleOverlayClick}>
       <div className={styles.modal}>
         <button className={styles.buttonClose} onClick={onToggle}>x</button>
         {isLoading && <p className={styles.loadingMessage}>Загрузка профиля...</p>}

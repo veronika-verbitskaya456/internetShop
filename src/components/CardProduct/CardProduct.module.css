@@ -30,3 +30,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.infoProductContainer {
+  position: relative;
+}
+
+.price {
+  margin-left: 10px;
+  color: #047a32;
+  font-weight: 600;
+}
+
+.cartButtonCard {
+  width: 30px;
+  padding: 3px 2px 0 2px;
+  background-color: #047a32;
+  border-radius: 5px;
+}

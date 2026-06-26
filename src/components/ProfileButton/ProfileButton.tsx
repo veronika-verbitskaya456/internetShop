@@ -10,6 +10,7 @@ const ProfileButton = ({ isOpen = false, onClick }: ProfileButtonProps) => {
   return (
     <button className={styles.profileButton} onClick={onClick}>
       <ProfileButtonIcon isOpened={isOpen} />
+      <p className={styles.profileTitle}>Профиль</p>
     </button>
   )
 }

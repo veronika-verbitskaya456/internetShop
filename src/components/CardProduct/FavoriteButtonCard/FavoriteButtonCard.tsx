@@ -1,14 +1,14 @@
 import FavoriteButtonIcon from "../../../assets/icons/FavoriteButtonIcon";
-import styles from './FavoriteButton.module.css'
-import { AppDispatch, RootState } from "../../../store/store";
+import styles from './FavoriteButtonCard.module.css'
+import { AppDispatch } from "../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { Product } from "../../../services/types";
-import { toggleLikedProduct } from "../../../store/slices/productSlice";
+import { selectIsProductLiked, toggleLikedProduct } from "../../../store/slices/productSlice";
 
-const FavoriteButton = ({product}: { product: Product }) => {
+
+const FavoriteButtonCard = ({product}: { product: Product }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const likedProducts = useSelector((state: RootState) => state.products.liked);
-  const isFavorited = likedProducts.some(p => p.id === product.id);
+  const isFavorited = useSelector(selectIsProductLiked(product.id));
 
   const handleClickFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -22,4 +22,4 @@ const FavoriteButton = ({product}: { product: Product }) => {
   )
 }
 
-export default FavoriteButton;
+export default FavoriteButtonCard;

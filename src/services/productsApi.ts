@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "./baseQuery";
-import type { Product, ProductResponse } from "./types";
+import type { Categories, Product, ProductResponse } from "./types";
 import { transformProduct } from "../utils/productsApiUtils";
 
 export const productsApi = createApi({
@@ -39,6 +39,9 @@ export const productsApi = createApi({
       transformResponse: (response: ProductResponse) =>
         transformProduct(response),
     }),
+    getAllCategories: builder.query<Categories[], void>({
+      query: () => "categories",
+    }),
     getAllProductsByCategory: builder.query({
       query: (categoryId) => `categories/${categoryId}/products`,
       transformResponse: (response: ProductResponse[]) =>
@@ -47,5 +50,9 @@ export const productsApi = createApi({
   }),
 });
 
-export const { useGetAllProductsWithPaginationQuery, useGetProductByIdQuery } =
-  productsApi;
+export const {
+  useGetAllProductsWithPaginationQuery,
+  useGetProductByIdQuery,
+  useGetAllCategoriesQuery,
+  useGetAllProductsByCategoryQuery,
+} = productsApi;

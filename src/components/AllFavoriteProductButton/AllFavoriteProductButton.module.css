@@ -1,4 +1,4 @@
-.profileButton {
+.favoriteButton {
   width: 70px;
   height: 70px;
   padding: 5px;
@@ -10,28 +10,27 @@
   position: relative;
 }
 
-.profileButton:hover {
+.favoriteButton:hover {
   transform: scale(1.05);
 }
 
-.profileButton:active {
+.favoriteButton:active {
   transform: scale(0.92);
 }
 
-.profileButton:focus-visible {
+.favoriteButton:focus-visible {
   outline: 2px solid rgb(4, 122, 50);
   outline-offset: 2px;
 }
 
-.profileButton svg {
+.favoriteButton svg {
   width: 100%;
   height: 100%;
   display: block;
   transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.profileTitle {
+.favoriteTitle {
   color: #fff;
   font-size: 10px;
-
 }
