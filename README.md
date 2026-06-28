@@ -1,73 +1,219 @@
-# React + TypeScript + Vite
+# InternetShop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Современный интернет-магазин на React с каталогом товаров, авторизацией, корзиной, избранным и историей заказов. Приложение работает с REST API [Platzi Fake Store](https://api.escuelajs.co) и ориентировано на удобный пользовательский опыт: быстрый поиск, фильтрация, постраничная навигация и защищённые разделы для авторизованных пользователей.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Содержание
 
-## React Compiler
+- [Возможности](#возможности)
+- [Стек технологий](#стек-технологий)
+- [Быстрый старт](#быстрый-старт)
+- [Скрипты](#скрипты)
+- [Маршруты приложения](#маршруты-приложения)
+- [Архитектура](#архитектура)
+- [Работа с API](#работа-с-api)
+- [Аутентификация](#аутентификация)
+- [Хранение данных](#хранение-данных)
+- [Структура проекта](#структура-проекта)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Возможности
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Каталог и товары
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Главная страница** — промо-слайдер (Swiper), баннеры и сетка товаров с фильтрами.
+- **Поиск** — строка поиска в шапке с debounce (500 мс); результаты отображаются на главной странице.
+- **Фильтрация** — по названию, точной цене, диапазону цен и категории.
+- **Пагинация** — клиентская постраничная навигация с подгрузкой данных с сервера порциями по 50 товаров.
+- **Страница товара** — галерея изображений, описание, цена, добавление в корзину и избранное.
+- **Страница категории** — товары выбранной категории с дополнительными фильтрами.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Пользовательский аккаунт
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Регистрация** — создание аккаунта с загрузкой аватара через API.
+- **Вход** — авторизация по email и паролю.
+- **Профиль** — модальное окно с данными пользователя, переход к заказам и выход из системы.
+- **JWT-сессия** — access token в Redux, refresh token в cookie; автоматическое обновление токена при истечении.
+
+### Покупки
+
+- **Корзина** — добавление и удаление товаров, подсчёт итоговой суммы, оформление заказа.
+- **Избранное** — сохранение понравившихся товаров с быстрым доступом из шапки.
+- **История заказов** — список оформленных заказов с датой, составом и суммой.
+
+### UX и интерфейс
+
+- Адаптивная вёрстка с CSS Modules.
+- Модальные окна: категории, профиль, подтверждение действий, благодарность за покупку.
+- Lazy loading страниц через `React.lazy`.
+- Защита маршрутов: публичные (вход/регистрация) и приватные (корзина, избранное, заказы).
+- Страница 404 для несуществующих адресов.
+
+---
+
+## Стек технологий
+
+| Категория | Технологии |
+|-----------|------------|
+| UI | React 19, TypeScript |
+| Сборка | Vite 8 |
+| Маршрутизация | React Router 7 |
+| Состояние | Redux Toolkit, RTK Query |
+| Формы | React Hook Form |
+| Слайдер | Swiper 12 |
+| HTTP / Cookie | Fetch (RTK Query), js-cookie |
+| Стили | CSS Modules |
+
+---
+
+## Быстрый старт
+
+### Требования
+
+- [Node.js](https://nodejs.org/) 18+
+- npm или yarn
+
+Приложение будет доступно по адресу `http://localhost:5173`.
+
+> **Примечание.** В режиме разработки запросы к API проксируются через Vite на `https://api.escuelajs.co` (префикс `/api`). Дополнительная настройка окружения не требуется.
+
+---
+
+## Маршруты приложения
+
+| Путь | Страница | Доступ |
+|------|----------|--------|
+| `/` | Главная | Публичный |
+| `/products/:id` | Карточка товара | Публичный |
+| `/categories/:slug` | Категория | Публичный |
+| `/signin` | Вход | Только для гостей |
+| `/registration` | Регистрация | Только для гостей |
+| `/cart` | Корзина | Только авторизованные |
+| `/favorites` | Избранное | Только авторизованные |
+| `/orders` | История заказов | Только авторизованные |
+| `*` | Страница 404 | Публичный |
+
+---
+
+## Архитектура
+
+```
+src/
+├── components/     # Переиспользуемые UI-компоненты
+├── pages/          # Страницы приложения
+├── layouts/        # Общие макеты (шапка, контент)
+├── store/          # Redux store и slices
+├── services/       # RTK Query API и инициализация auth
+├── hooks/          # Пользовательские хуки
+├── utils/          # Вспомогательные функции и константы
+└── assets/         # Изображения и SVG-иконки
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Управление состоянием
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **`authSlice`** — токен доступа, флаг авторизации, данные пользователя.
+- **`productSlice`** — корзина, избранное, заказы (с сохранением в `localStorage`).
+- **`catalogSlice`** — черновые и применённые фильтры каталога.
+- **`authApi` / `productsApi`** — серверные данные через RTK Query с кешированием.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## Работа с API
+
+Backend: [Platzi Fake Store API](https://api.escuelajs.co/api/v1/)
+
+Основные эндпоинты, используемые в приложении:
+
+| Метод | Эндпоинт | Назначение |
+|-------|----------|------------|
+| `GET` | `/products` | Список товаров с фильтрами и offset |
+| `GET` | `/products/:id` | Детали товара |
+| `GET` | `/categories` | Список категорий |
+| `GET` | `/categories/:id/products` | Товары категории |
+| `POST` | `/auth/login` | Авторизация |
+| `POST` | `/auth/refresh-token` | Обновление access token |
+| `GET` | `/auth/profile` | Профиль пользователя |
+| `POST` | `/users/` | Регистрация |
+| `POST` | `/files/upload` | Загрузка аватара |
+
+---
+
+## Аутентификация
+
+1. Пользователь входит через `/signin` — сервер возвращает `access_token` и `refresh_token`.
+2. Access token хранится в Redux; refresh token — в cookie (`js-cookie`, срок 7 дней).
+3. `baseQueryWithReauth` автоматически обновляет access token при получении ответа `401`.
+4. При первом запуске `AuthInitialization` восстанавливает сессию по refresh token.
+5. Добавление в корзину/избранное и доступ к защищённым страницам требуют авторизации (`useRequireAuth`, `PrivateRoute`).
+
+---
+
+## Хранение данных
+
+| Данные | Хранилище |
+|--------|-----------|
+| Access token | Redux (`authSlice`) |
+| Refresh token | Cookie |
+| Корзина | `localStorage` → `cartProducts` |
+| Избранное | `localStorage` → `likedProducts` |
+| Заказы | `localStorage` → `orders` |
+| Кеш API | RTK Query |
+
+Заказы создаются на клиенте: после оформления корзина очищается, заказ сохраняется локально в истории.
+
+---
+
+## Структура проекта
+
+```
+internetShop/
+├── public/                 # Статические файлы
+├── src/
+│   ├── assets/             # Изображения, иконки
+│   ├── components/
+│   │   ├── CardProduct/    # Карточка товара
+│   │   ├── CartButton/     # Кнопка корзины в шапке
+│   │   ├── Header/         # Шапка сайта
+│   │   ├── MainSlider/     # Промо-слайдер
+│   │   ├── Modals/         # Модальные окна
+│   │   ├── ProductsCatalog/# Каталог с пагинацией
+│   │   ├── ProductsFilter/ # Панель фильтров
+│   │   ├── Routes/         # PrivateRoute, PublicRoute
+│   │   └── SearchInput/    # Поиск с debounce
+│   ├── hooks/
+│   │   ├── useDebouncedValue.ts
+│   │   └── useRequireAuth.ts
+│   ├── layouts/
+│   │   └── MainLayout.tsx
+│   ├── pages/
+│   │   ├── MainPage/
+│   │   ├── ProductPage/
+│   │   ├── CategoryPage/
+│   │   ├── CartProductsPage/
+│   │   ├── FavoriteProductsPage/
+│   │   ├── OrdersPage/
+│   │   ├── SignInPage/
+│   │   ├── RegistrationPage/
+│   │   └── 404Page/
+│   ├── services/
+│   │   ├── authApi.ts
+│   │   ├── productsApi.ts
+│   │   ├── baseQuery.ts
+│   │   └── authInitialization.tsx
+│   ├── store/
+│   │   ├── store.ts
+│   │   └── slices/
+│   │       ├── authSlice.ts
+│   │       ├── productSlice.ts
+│   │       └── catalogSlice.ts
+│   ├── utils/
+│   ├── routes.ts
+│   ├── main.tsx
+│   └── index.css
+├── index.html
+├── vite.config.ts
+├── tsconfig.json
+└── package.json
 ```
