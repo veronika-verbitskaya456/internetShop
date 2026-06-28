@@ -1,0 +1,141 @@
+.cartButton {
+  width: 70px;
+  height: 70px;
+  padding: 8px 5px 0 5px;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  gap: 0px;
+}
+
+.cartButton:hover {
+  transform: scale(1.05);
+}
+
+.cartButton:active {
+  transform: scale(0.92);
+}
+
+.cartButton:focus-visible {
+  outline: 2px solid rgb(4, 122, 50);
+  outline-offset: 2px;
+}
+
+.iconWrapper {
+  position: relative;
+  width: 100%;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cartButton svg {
+  width: 100%;
+  height: 100%;
+  max-width: 42px;
+  max-height: 42px;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.cartButton:hover svg {
+  transform: scale(1.1);
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -1px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounceIn 0.3s ease;
+}
+
+.cartTitle {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 500;
+  margin: 0;
+  padding: 2px 0 0 0;
+  transition: color 0.2s ease;
+  line-height: 1.2;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.badge.pulse {
+  animation: pulse 0.5s ease;
+}
+
+@media (max-width: 640px) {
+  .cartButton {
+    width: 50px;
+    height: 50px;
+    padding: 6px 4px 2px 4px;
+  }
+  
+  .iconWrapper {
+    height: 32px;
+  }
+  
+  .cartButton svg {
+    max-width: 32px;
+    max-height: 32px;
+  }
+  
+  .cartTitle {
+    font-size: 8px;
+  }
+  
+  .badge {
+    font-size: 8px;
+    min-width: 14px;
+    height: 14px;
+    top: -4px;
+    right: -4px;
+    border-width: 1.5px;
+  }
+}

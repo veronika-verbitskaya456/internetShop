@@ -1,0 +1,57 @@
+.mainPageButton {
+  width: 70px;
+  height: 70px;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.mainPageButton:hover {
+  transform: scale(1.05);
+}
+
+.mainPageButton:active {
+  transform: scale(0.92);
+}
+
+.mainPageButton svg {
+  width: 100%;
+  height: 100%;
+  max-width: 42px;
+  max-height: 42px;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.mainPageTitle {
+  color: #047a32;
+  font-size: 10px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.2;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 640px) {
+  .mainPageButton {
+    width: 50px;
+    height: 50px;
+    padding: 6px 4px 2px 4px;
+  }
+  
+  .mainPageButton svg {
+    max-width: 32px;
+    max-height: 32px;
+  }
+  
+  .mainPageTitle {
+    font-size: 8px;
+  }
+}

@@ -1,0 +1,65 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1700px;
+  width: 100%;
+  padding-top: 20px;
+}
+
+.mainBannerContainer {
+  display: flex;
+  width: 100%;
+  max-width: 1700px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.billboardImage {
+  max-width: 300px;
+  max-height: 300px;
+  align-self: center;
+}
+
+@media (max-width: 1024px) {
+  .billboardImage {
+    max-width: 180px;
+    max-height: 180px;
+  }
+}
+
+@media (max-width: 820px) {
+  .mainBannerContainer {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .billboardImage {
+    display: none;
+  }
+
+  .mainBannerContainer > :nth-child(2) {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContainer {
+    padding-top: 12px;
+  }
+
+  .mainBannerContainer {
+    margin-bottom: 16px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContainer {
+    padding-top: 8px;
+  }
+}
