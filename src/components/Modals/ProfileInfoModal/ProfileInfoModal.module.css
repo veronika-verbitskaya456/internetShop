@@ -60,10 +60,10 @@
   transform: rotate(90deg) scale(0.9);
 }
 
-.buttonLogIn {
-  width: 90px;
+.buttonLogIn, .buttonOrders {
+  width: 110px;
   margin-right: 10px;
-  padding: 8px 20px;
+  padding: 8px 10px;
   background: #fff;
   color: #047a32;
   border: none;
@@ -76,13 +76,12 @@
   letter-spacing: 0.5px;
 }
 
-.buttonLogIn:hover {
+.buttonLogIn:hover, .buttonOrders:hover {
   background: #047a32;
   color: #fff;
-  border: solid 1px #fff;
 }
 
-.buttonLogIn:active {
+.buttonLogIn:active, .buttonOrders:active {
   transform: scale(0.96);
 }
 
@@ -132,7 +131,7 @@
 .buttonRefresh {
   padding: 8px 20px;
   background: #ef4444;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 12px;
@@ -199,121 +198,37 @@
   font-size: 13px;
 }
 
-/* Темная тема */
-/* @media (prefers-color-scheme: dark) {
-  .modalWrapper::before {
-    background: #1f2937;
-    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.2);
+@media (max-width: 768px) {
+  .overlay {
+    padding: 12px;
+    justify-content: center;
+    align-items: flex-start;
   }
-  
-  .modal {
-    background: #1f2937;
-    box-shadow: 
-      0 10px 40px rgba(0, 0, 0, 0.3),
-      0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .modal::-webkit-scrollbar-thumb {
-    background: #4b5563;
-  }
-  
-  .modal::-webkit-scrollbar-thumb:hover {
-    background: #6b7280;
-  }
-  
-  .buttonClose {
-    background: #374151;
-    color: #9ca3af;
-  }
-  
-  .buttonClose:hover {
-    background: #4b5563;
-    color: #f3f4f6;
-  }
-  
-  .loadingMessage {
-    color: #9ca3af;
-  }
-  
-  .loadingMessage::before {
-    border-color: #374151;
-    border-top-color: rgb(34, 197, 94);
-  }
-  
-  .errorContainer p {
-    color: #f87171;
-  }
-  
-  .buttonRefresh {
-    background: #ef4444;
-  }
-  
-  .buttonRefresh:hover {
-    background: #dc2626;
-  }
-  
-  .userAvatar {
-    border-color: #374151;
-  }
-  
-  .userInfoContainer:hover .userAvatar {
-    border-color: rgb(34, 197, 94);
-  }
-  
-  .userInfo {
-    color: #f3f4f6;
-    border-bottom-color: #374151;
-  }
-  
-  .userInfo:last-of-type {
-    color: #9ca3af;
-  }
-} */
 
-/* Адаптив для мобильных */
-/* @media (max-width: 640px) {
-  .modalWrapper {
-    top: 64px;
-    right: 8px;
-    left: 8px;
-    animation: slideDownMobile 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  
-  .modalWrapper::before {
-    right: 18px;
-  }
-  
   .modal {
+    top: 80px;
+    right: 0;
+    max-width: calc(100vw - 24px);
     min-width: auto;
-    max-width: 100%;
-    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    top: 70px;
     padding: 20px 16px 16px;
+    border-radius: 12px;
   }
-  
-  @keyframes slideDownMobile {
-    from {
-      opacity: 0;
-      transform: translateY(-10px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+
+  .buttonLogIn,
+  .buttonOrders {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 8px;
   }
-  
+
   .userAvatar {
     width: 64px;
     height: 64px;
   }
-  
-  .userInfo:first-of-type {
-    font-size: 16px;
-  }
-} */
-
-/* Адаптив для планшетов */
-/* @media (min-width: 641px) and (max-width: 1024px) {
-  .modalWrapper {
-    right: 16px;
-  }
-} */
+}

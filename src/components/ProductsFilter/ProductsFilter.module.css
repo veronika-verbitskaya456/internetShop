@@ -1,0 +1,129 @@
+.filterContainer {
+  width: 100%;
+  max-width: 1230px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #44805b;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.input,
+.select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f2937;
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #047a32;
+}
+
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.applyButton,
+.resetButton {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.applyButton {
+  background: #047a32;
+  color: #fff;
+}
+
+.applyButton:hover {
+  background: #0a9e43;
+}
+
+.resetButton {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.resetButton:hover {
+  background: #e5e7eb;
+}
+
+.applyButton:active,
+.resetButton:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 900px) {
+  .form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .filterContainer {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .applyButton,
+  .resetButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .filterContainer {
+    padding: 12px;
+    border-radius: 10px;
+  }
+}

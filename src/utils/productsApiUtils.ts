@@ -1,4 +1,5 @@
 import type { Product, ProductResponse } from "../services/types";
+import { sanitizeProductImages } from "./imageUtils";
 
 export const transformProduct = (serverProduct: ProductResponse): Product => ({
   id: serverProduct.id,
@@ -7,5 +8,5 @@ export const transformProduct = (serverProduct: ProductResponse): Product => ({
   price: serverProduct.price,
   description: serverProduct.description ?? "",
   category: serverProduct.category,
-  images: serverProduct.images ?? [],
+  images: sanitizeProductImages(serverProduct.images),
 });

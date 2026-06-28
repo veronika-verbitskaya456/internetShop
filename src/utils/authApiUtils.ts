@@ -1,6 +1,8 @@
+import { getSafeImageUrl } from "./imageUtils";
+
 export const getProxyImageUrl = (url: string | undefined) => {
   if (!url) return "";
-  let cleanUrl = url.replace(/[\[\]"]/g, "").trim();
+  const cleanUrl = url.replace(/[\[\]"]/g, "").trim();
 
   if (cleanUrl.includes("api.escuelajs.co")) {
     const pathIndex = cleanUrl.indexOf("/api/");
@@ -10,5 +12,13 @@ export const getProxyImageUrl = (url: string | undefined) => {
     return cleanUrl.replace("https://api.escuelajs.co", "/api");
   }
 
-  return cleanUrl;
+  return getSafeImageUrl(cleanUrl, "");
+};
+
+export const getAuthErrorMessage = (error: unknown): string => {
+  if (error && typeof error === "object" && "status" in error && error.status === 401) {
+    return "Пользователя с таким именем нет";
+  }
+
+  return "Ошибка сервера";
 };

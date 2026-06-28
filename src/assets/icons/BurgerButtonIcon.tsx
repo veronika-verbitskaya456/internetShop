@@ -23,7 +23,7 @@ const BurgerButtonIcon: React.FC<BurgerButtonIconProps> = ({ isOpened, onClick, 
       className={className}
     >
       <path
-        fill="rgb(4, 122, 50)"
+        fill="#047a32"
         d={isOpened ? PATHS.opened : PATHS.closed}
       />
     </svg>

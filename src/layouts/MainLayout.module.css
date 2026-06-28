@@ -5,4 +5,17 @@
   justify-content: center;
   min-height: 100vh;
   width: 100%;
+  padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+  .mainContainer {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContainer {
+    padding: 0 8px;
+  }
 }

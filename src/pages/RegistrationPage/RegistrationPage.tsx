@@ -8,6 +8,7 @@ import { NewUserRequest } from "../../services/types";
 import { setToken } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { getAuthErrorMessage } from "../../utils/authApiUtils";
 
 interface RegistrationFormInput {
   name: string;
@@ -51,7 +52,6 @@ const RegistrationPage = () => {
       }
 
       const registeredUser = await createNewUser(newUser).unwrap();
-      console.log(registeredUser.id);
       const loginData = await login({
         email: registeredUser.email,
         password: registeredUser.password
@@ -64,7 +64,7 @@ const RegistrationPage = () => {
     } catch (error) {
       setError("root.server", {
         type: "server",
-        message: "Server error",
+        message: getAuthErrorMessage(error),
       });
     }
   };

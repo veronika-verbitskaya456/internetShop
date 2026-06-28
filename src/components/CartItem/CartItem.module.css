@@ -1,0 +1,147 @@
+.cartItem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  border: 1px solid #047a32;
+  border-radius: 16px;
+  padding: 16px 20px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.cartItem:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border-color: #d1d5db;
+}
+
+.imageWrapper {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f9fafb;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.productInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.productTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #047a32;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.productDescription {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 8px 0;
+  overflow: hidden;
+}
+
+.productMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.productPrice {
+  font-size: 18px;
+  font-weight: 700;
+  color: #047a32;
+}
+
+.productCategory {
+  font-size: 12px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+.removeButton {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: #9ca3af;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.removeButton:hover {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.removeButton:active {
+  transform: scale(0.85);
+}
+
+@media (max-width: 640px) {
+  .cartItem {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    height: 200px;
+  }
+
+  .removeButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #fff;
+  }
+
+  .removeButton:hover {
+    background: #fef2f2;
+  }
+
+  .productTitle {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .cartItem {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .imageWrapper {
+    height: 160px;
+  }
+
+  .productPrice {
+    font-size: 16px;
+  }
+
+  .productDescription {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

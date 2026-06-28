@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setToken } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import styles from './SignInPage.module.css';
+import { getAuthErrorMessage } from '../../utils/authApiUtils';
 import { Routes } from "../../routes";
 
 interface SignInFormInput {
@@ -36,12 +37,12 @@ const SignInPage = () => {
       const password = formValues.password;
       const loginData = await login({ email, password }).unwrap();
       dispatch(setToken({ accessToken: loginData.access_token }));
-      navigate('/');
+      navigate(Routes.MAIN);
 
     } catch (error) {
       setError("root.server", {
         type: "server",
-        message: "Server error",
+        message: getAuthErrorMessage(error),
       });
     }
   };

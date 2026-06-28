@@ -68,3 +68,17 @@ export type Categories = {
   slug: string;
   image: string;
 };
+
+export type ProductFilters = {
+  title?: string;
+  price?: number;
+  price_min?: number;
+  price_max?: number;
+  categoryId?: number;
+  categorySlug?: string;
+};
+
+export type ProductsQueryArgs = {
+  offset: number;
+  filters?: ProductFilters;
+};

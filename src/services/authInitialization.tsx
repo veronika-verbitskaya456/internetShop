@@ -1,35 +1,24 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import { AppDispatch, RootState } from "../store/store";
 import { authApi } from "./authApi";
-import { AppDispatch } from "../store/store";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [isReady, setIsReady] = useState(false);
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const refreshToken = Cookies.get("refreshToken");
+    const refreshToken = Cookies.get("refreshToken");
 
-      if (refreshToken) {
-        try {
-          await dispatch(authApi.endpoints.getUserProfile.initiate(undefined)).unwrap();
-        } catch (error) {
-          console.warn("Автоматический вход не удался:", error);
-        }
-      }
-      setIsReady(true);
-    };
+    if (!refreshToken?.trim()) {
+      return;
+    }
 
-    checkAuth();
-  }, [dispatch]);
+    dispatch(authApi.endpoints.getUserProfile.initiate(undefined));
+  }, [dispatch, accessToken]);
 
-  if (isReady) {
-      return <>{children}</>;
-  }
-
-
+  return <>{children}</>;
 };
 
 export default AuthInitializer;

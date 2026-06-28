@@ -54,7 +54,7 @@
   top: -5px;
   right: -1px;
   background: #ef4444;
-  color: white;
+  color: #fff;
   font-size: 10px;
   font-weight: 700;
   min-width: 18px;
@@ -109,16 +109,6 @@
 .badge.pulse {
   animation: pulse 0.5s ease;
 }
-
-/* @media (prefers-color-scheme: dark) {
-  .badge {
-    border-color: #1f2937;
-  }
-  
-  .cartButton:hover .cartTitle {
-    color: #4ade80;
-  }
-} */
 
 @media (max-width: 640px) {
   .cartButton {

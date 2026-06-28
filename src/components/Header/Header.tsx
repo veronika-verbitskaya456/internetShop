@@ -9,6 +9,7 @@ import AllFavoriteProductButton from '../AllFavoriteProductButton/AllFavoritePro
 import ProductCategoriesModal from '../Modals/ProductCategoriesModal/ProductCategoriesModal';
 import { useNavigate } from 'react-router-dom';
 import { Routes } from '../../routes';
+import MainPageButton from '../MainPageButton/MainPageButton';
 
 const Header = () => {
   const [isOpenProfileInfoModal, setIsOpenProfileInfoModal] = useState(false);
@@ -26,8 +27,13 @@ const Header = () => {
   return (
     <>
       <header className={styles.header}>
-        <BurgerButton isOpen={isOpenCategoriesModal} onClick={handleToggleCategoriesModal}/>
-        <SearchInput />
+        <div className={styles.headerLeft}>
+          <BurgerButton isOpen={isOpenCategoriesModal} onClick={handleToggleCategoriesModal}/>
+          <MainPageButton/>
+        </div>
+        <div className={styles.headerSearch}>
+          <SearchInput />
+        </div>
         <div className={styles.headerButtonsWrapper}>
           <AllFavoriteProductButton onClick={() => navigate(Routes.FAVORITES)}/>
           <CartButton />

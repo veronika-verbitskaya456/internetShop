@@ -38,7 +38,19 @@
   --error-text: #ff6b6b;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  overflow-x: hidden;
+  min-width: 320px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }

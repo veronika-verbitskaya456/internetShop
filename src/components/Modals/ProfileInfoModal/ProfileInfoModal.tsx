@@ -47,6 +47,11 @@ const ProfileInfoModal = ({ isOpen, onToggle }: ProfileInfoModalProps) => {
     }
   };
 
+   const handleToOrdersPage = () => {
+    navigate(Routes.ORDERS);
+    onToggle();
+  };
+
   const handleRefetchProfile = () => {
     refetch();
   }
@@ -72,9 +77,16 @@ const ProfileInfoModal = ({ isOpen, onToggle }: ProfileInfoModalProps) => {
 
         {isAuth && user && (
           <div className={styles.userInfoContainer}>
-            {user.avatar && <img src={getProxyImageUrl(user.avatar)} alt="userAvatar" className={styles.userAvatar} />}
+            {getProxyImageUrl(user.avatar) && (
+              <img
+                src={getProxyImageUrl(user.avatar)}
+                alt="userAvatar"
+                className={styles.userAvatar}
+              />
+            )}
             <p className={styles.userInfo}>{user.name}</p>
             <p className={styles.userInfo}>{user.email}</p>
+            <button className={styles.buttonOrders} onClick={handleToOrdersPage}>Мои заказы</button>
             <button className={styles.buttonLogIn} onClick={handleToSignOutPage}>ВЫЙТИ</button>
           </div>
         )}

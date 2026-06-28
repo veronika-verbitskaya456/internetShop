@@ -7,7 +7,7 @@ const FavoriteProductsPage = () => {
   const likedProducts = useSelector(selectLikedProducts);
   return (
     <div className={styles.gridFavorites}>
-      {likedProducts.map((product) => <CardProduct product={product} />)}
+      {likedProducts.map((product) => <CardProduct key={product.id} product={product} />)}
     </div>
   )
 }

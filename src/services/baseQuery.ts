@@ -3,6 +3,8 @@ import type { RootState } from "../store/store";
 import Cookies from "js-cookie";
 import { logout, setToken } from "../store/slices/authSlice";
 
+const PUBLIC_ENDPOINTS = new Set(["login", "createNewUser"]);
+
 export const baseQuery = fetchBaseQuery({
   baseUrl: "/api/v1/",
   prepareHeaders: (headers, { getState, endpoint }) => {
@@ -23,57 +25,77 @@ export const baseQuery = fetchBaseQuery({
   },
 });
 
+const refreshAccessToken = async (
+  api: Parameters<BaseQueryFn>[1],
+  extraOptions: Parameters<BaseQueryFn>[2],
+) => {
+  const refreshToken = Cookies.get("refreshToken");
+
+  if (!refreshToken?.trim()) {
+    return null;
+  }
+
+  const refreshResult = await baseQuery(
+    {
+      url: "auth/refresh-token",
+      method: "POST",
+      body: { refreshToken },
+    },
+    api,
+    extraOptions,
+  );
+
+  if (!refreshResult.data) {
+    return null;
+  }
+
+  const data = refreshResult.data as {
+    access_token: string;
+    refresh_token: string;
+  };
+
+  api.dispatch(setToken({ accessToken: data.access_token }));
+  Cookies.set("refreshToken", data.refresh_token, {
+    path: "/",
+    expires: 7,
+  });
+
+  return data.access_token;
+};
+
 export const baseQueryWithReauth: BaseQueryFn = async (
   args,
   api,
   extraOptions,
 ) => {
+  const endpoint = api.endpoint;
+  const isPublicEndpoint = PUBLIC_ENDPOINTS.has(endpoint);
+  const state = api.getState() as RootState;
+  const hasAccessToken = Boolean(state.auth.accessToken);
+  const hasRefreshToken = Boolean(Cookies.get("refreshToken")?.trim());
+
+  if (!isPublicEndpoint && !hasAccessToken && hasRefreshToken) {
+    const refreshed = await refreshAccessToken(api, extraOptions);
+
+    if (!refreshed) {
+      api.dispatch(logout());
+      Cookies.remove("refreshToken", { path: "/" });
+      return { error: { status: 401, data: "Unauthorized" } };
+    }
+  }
+
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error?.status === 401) {
-    const state = api.getState() as RootState;
-    const isAuth = state.auth.isAuthenticated;
-    if (!isAuth) {
-      return result;
-    }
+  if (result.error?.status === 401 && !isPublicEndpoint) {
+    const refreshed = await refreshAccessToken(api, extraOptions);
 
-    const refreshToken = Cookies.get("refreshToken");
-    if (refreshToken && refreshToken.trim() !== "") {
-      const refreshResult = await baseQuery(
-        {
-          url: "auth/refresh-token",
-          method: "POST",
-          body: { refreshToken: refreshToken },
-        },
-        api,
-        extraOptions,
-      );
-
-      if (refreshResult.data) {
-        const data = refreshResult.data as {
-          access_token: string;
-          refresh_token: string;
-        };
-
-        const currentState = api.getState() as RootState;
-        if (currentState.auth.isAuthenticated) {
-          api.dispatch(setToken({ accessToken: data.access_token }));
-          Cookies.set("refreshToken", data.refresh_token, {
-            path: "/",
-            expires: 7,
-          });
-          result = await baseQuery(args, api, extraOptions);
-        }
-      } else {
-        api.dispatch(logout());
-        Cookies.remove("refreshToken", { path: "/" });
-        return result;
-      }
+    if (refreshed) {
+      result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logout());
       Cookies.remove("refreshToken", { path: "/" });
-      return result;
     }
   }
+
   return result;
 };

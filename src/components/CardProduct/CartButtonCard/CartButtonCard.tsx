@@ -4,6 +4,7 @@ import { Product } from "../../../services/types";
 import { selectIsProductInCart, toggleCartProduct } from "../../../store/slices/productSlice";
 import CartButtonIcon from "../../../assets/icons/CartButtonIcon";
 import { AppDispatch } from '../../../store/store';
+import { useRequireAuth } from "../../../hooks/useRequireAuth";
 
 interface CartButtonProps {
   product: Product;
@@ -13,10 +14,17 @@ interface CartButtonProps {
 const CartButtonCard = ({ product, className }: CartButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const isInCart = useSelector(selectIsProductInCart(product.id));
+  const { requireAuth } = useRequireAuth();
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    dispatch(toggleCartProduct({ product }));
+
+    if (isInCart) {
+      dispatch(toggleCartProduct({ product }));
+      return;
+    }
+
+    requireAuth(() => dispatch(toggleCartProduct({ product })));
   };
 
   return (

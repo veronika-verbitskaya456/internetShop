@@ -35,8 +35,8 @@ export const authApi = createApi({
           const { data } = await queryFulfilled;
           dispatch(setToken({ accessToken: data.access_token }));
           Cookies.set("refreshToken", data.refresh_token, { path: "/", expires: 7 });
-        } catch (error) {
-          console.warn(error);
+        } catch {
+          console.warn('refreshToken error');
         }
       },
     }),
@@ -47,8 +47,7 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled;
           dispatch(setUser({ user: data }));
-        } catch (error) {
-          console.warn("Пользователь не авторизован или сессия исткла", error);
+        } catch {
           dispatch(logout());
         }
       },
@@ -59,15 +58,6 @@ export const authApi = createApi({
         url: "files/upload",
         body: formData,
       }),
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-
-          // можно обновить профиль пользователя
-        } catch (error) {
-          console.warn(error);
-        }
-      },
     }),
     createNewUser: builder.mutation<User, NewUserRequest>({
       query: (newUser) => ({
