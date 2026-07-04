@@ -2,7 +2,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useLoginMutation } from "../../services/authApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from './SignInPage.module.css';
 import { getAuthErrorMessage } from '../../utils/authApiUtils';
 import { Routes } from "../../routes";
@@ -104,14 +104,16 @@ const SignInPage = () => {
         >
           {isSubmitting ? "ВХОД..." : "ВОЙТИ"}
         </button>
-
-        <div className={styles.footer}>
-          <p>
-            Нет аккаунта?{' '}
-            <a href={Routes.REGISTRATION} className={styles.signUpLink} >Зарегистрироваться</a>
-          </p>
-        </div>
       </form>
+
+      <div className={styles.footer}>
+        <p>
+          Нет аккаунта?{" "}
+          <Link to={Routes.REGISTRATION} className={styles.signUpLink}>
+            Зарегистрироваться
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

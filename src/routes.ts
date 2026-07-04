@@ -1,15 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy } from "react";
-
-const CartProductsPage = lazy(
-  () => import("./pages/CartProductsPage/CartProductsPage"),
-);
 const MainPage = lazy(() => import("./pages/MainPage/MainPage"));
-const SignInPage = lazy(() => import("./pages/SignInPage/SignInPage"));
-const Page404 = lazy(() => import("./pages/404Page/Page404"));
 const RegistrationPage = lazy(
   () => import("./pages/RegistrationPage/RegistrationPage"),
 );
+const CartProductsPage = lazy(
+  () => import("./pages/CartProductsPage/CartProductsPage"),
+);
+
+const SignInPage = lazy(() => import("./pages/SignInPage/SignInPage"));
+const Page404 = lazy(() => import("./pages/404Page/Page404"));
+
 const PrivateRoute = lazy(() => import("./components/Routes/PrivateRoute"));
 const PublicRoute = lazy(() => import("./components/Routes/PublicRoute"));
 const FavoriteProductsPage = lazy(
@@ -38,7 +39,10 @@ export enum Routes {
 export const getProductPath = (id: number) => `/products/${id}`;
 export const getCategoryPath = (slug: string) => `/categories/${slug}`;
 
-export const router = createBrowserRouter([
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+export const router = createBrowserRouter(
+[
   {
     path: Routes.MAIN,
     Component: MainLayout,
@@ -91,6 +95,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+],
+{ basename: basename || undefined },
+);
 
 export default router;

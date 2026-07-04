@@ -5,6 +5,10 @@ export const getProxyImageUrl = (url: string | undefined) => {
   const cleanUrl = url.replace(/[\[\]"]/g, "").trim();
 
   if (cleanUrl.includes("api.escuelajs.co")) {
+    if (!import.meta.env.DEV) {
+      return cleanUrl;
+    }
+
     const pathIndex = cleanUrl.indexOf("/api/");
     if (pathIndex !== -1) {
       return cleanUrl.substring(pathIndex);

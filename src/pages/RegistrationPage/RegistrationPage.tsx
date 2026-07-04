@@ -6,7 +6,7 @@ import { useCreateNewUserMutation, useLoginMutation, useUploadAvatarFileMutation
 import { useDispatch } from "react-redux";
 import { NewUserRequest } from "../../services/types";
 import { setToken } from "../../store/slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { getAuthErrorMessage } from "../../utils/authApiUtils";
 
@@ -232,16 +232,16 @@ const RegistrationPage = () => {
         >
           {isSubmitting ? "РЕГИСТРАЦИЯ..." : "ЗРЕГИСТРИРОВАТЬСЯ"}
         </button>
-
-        <div className={styles.footer}>
-          <p>
-            Уже есть аккаунт?{" "}
-            <a href={Routes.SIGN_IN} className={styles.signInLink}>
-              Войти
-            </a>
-          </p>
-        </div>
       </form>
+
+      <div className={styles.footer}>
+        <p>
+          Уже есть аккаунт?{" "}
+          <Link to={Routes.SIGN_IN} className={styles.signInLink}>
+            Войти
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

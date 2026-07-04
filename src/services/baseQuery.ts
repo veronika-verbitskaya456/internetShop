@@ -5,8 +5,12 @@ import { logout, setToken } from "../store/slices/authSlice";
 
 const PUBLIC_ENDPOINTS = new Set(["login", "createNewUser"]);
 
+const API_BASE_URL = import.meta.env.DEV
+  ? "/api/v1/"
+  : "https://api.escuelajs.co/api/v1/";
+
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "/api/v1/",
+  baseUrl: API_BASE_URL,
   prepareHeaders: (headers, { getState, endpoint }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
